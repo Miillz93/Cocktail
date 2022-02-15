@@ -1,0 +1,29 @@
+﻿@page "/cocktail/{id:int}"
+@inject HttpClient Http
+
+<PageTitle>Cocktail Details</PageTitle>
+
+<h3>CocktailComponent</h3>
+<p>@Id</p>
+@code {
+
+    [Parameter]
+    public int Id{get;set;}
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //
+    }
+
+
+      public void getCocktailId(){
+
+            Console.WriteLine("HIIII");
+
+     }
+    
+
+
+
+}

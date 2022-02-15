@@ -1,0 +1,87 @@
+﻿@page "/cocktails"
+@inject HttpClient Http
+
+<PageTitle>Cocktails</PageTitle>
+
+<div class="">
+    <div class="d-flex justify-content-center h-100">
+
+        
+        <div class="search mb-3"> 
+            <input type="text" class="search-input" placeholder="search..." name="" @bind="input">
+            <button class="btn btn-primary btn-large" @onclick="getCocktails">Search</button>
+        </div>
+    </div>
+
+</div>
+
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+  
+            @if(drinks == null){
+                <p><em>No data</em></p>
+
+            }else{
+                <div class="col-12">
+                    <h2 class="mb-3 text-danger">Total des Cocktails: @drinks.Count</h2>
+                </div>
+                @foreach (var drink in drinks)
+                {
+                      string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
+                    
+                        
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card my-3">
+                            <div class="card-thumbnail">
+                                <img src="@imagePath" class="img-fluid" alt="thumbnail">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title"><a href="#" class="text-secondary">@drink.strDrink</a></h3>
+                                @* <p class="card-text">@drink.strInstructions</p> *@
+                                <a href="#" class="btn btn-danger">Read More</a>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                }
+            
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+   
+    private List<Drink>? drinks;
+    private Drink drink;
+  
+    string urlBase = "https://www.thecocktaildb.com/api/json/v1/1/";
+
+     string search=""; string input=""; 
+
+
+    public async Task<List<Drink>> getCocktails(){
+     //public void getCocktails(){
+        
+        if(String.IsNullOrWhiteSpace(input)){
+
+        }else{
+    
+            string check = (input.Length == 1 ) ? search = $"search.php?f={input}": search= $"search.php?s={input}" ;
+            //Console.WriteLine(check);
+            Stream stream = await Http.GetStreamAsync(UriCocktail.urlBase+check);
+            StreamReader reader = new StreamReader(stream);
+            string jsonString = reader.ReadToEnd();
+            var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(jsonString);
+            drinks = cocktailsValues.drinks;
+
+            return drinks;
+        }
+
+        return drinks;
+
+    }
+
+
+}
