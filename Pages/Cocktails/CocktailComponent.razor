@@ -1,27 +1,47 @@
-﻿@page "/cocktail/{id:int}"
+﻿@page "/cocktail/{Id}"
 @inject HttpClient Http
 
+@{ 
+    string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
+}
 <PageTitle>Cocktail Details</PageTitle>
 
-<h3>CocktailComponent</h3>
-<p>@Id</p>
+
+<div class="container">
+    <h2>Cocktail Details</h2>
+    <hr />
+    <div class="card">
+        <div class="row no-gutters">
+            <div class="col-sm-3">
+                <img class="card-img" src="@imagePath" alt="@drink.strDrinkAlternate">
+            </div>
+            <div class="col-sm-9">
+                <div class="card-body">
+                    <h5 class="card-title">How To ? @drink.strDrink</h5>
+                    <p class="card-text">Description: @drink.strInstructions</p>
+                    <a href="/cocktails" class="btn btn-primary">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
 
     [Parameter]
-    public int Id{get;set;}
+    public string Id{get;set;}
 
+    public Drink drink;
 
     protected override async Task OnInitializedAsync()
     {
-        //
+        
+        Stream stream = await Http.GetStreamAsync(UriCocktail.urlBase+$"lookup.php?i={Id}");
+        string reader = new StreamReader(stream).ReadToEnd();
+        var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
+        drink = cocktailsValues.drinks.First();
+    
     }
-
-
-      public void getCocktailId(){
-
-            Console.WriteLine("HIIII");
-
-     }
     
 
 

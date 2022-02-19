@@ -37,9 +37,7 @@
                                 <img src="@imagePath" class="img-fluid" alt="thumbnail">
                             </div>
                             <div class="card-body">
-                                <h3 class="card-title"><a href="#" class="text-secondary">@drink.strDrink</a></h3>
-                                @* <p class="card-text">@drink.strInstructions</p> *@
-                                <a href="#" class="btn btn-danger">Read More</a>
+                                <h3 class="card-title"><a href="/cocktail/@drink.idDrink" class="text-secondary">@drink.strDrink</a></h3
                             </div>
                         </div>
                     </div> 
@@ -53,34 +51,28 @@
 
 @code {
    
-    private List<Drink>? drinks;
-    private Drink drink;
-  
-    string urlBase = "https://www.thecocktaildb.com/api/json/v1/1/";
+    private List<Drink>? drinks {get;set;} 
 
-     string search=""; string input=""; 
-
+     string search=""; string input=""; string check;
+       protected override async Task OnInitializedAsync()
+    {
+        await getCocktails();
+    }
 
     public async Task<List<Drink>> getCocktails(){
-     //public void getCocktails(){
         
         if(String.IsNullOrWhiteSpace(input)){
-
+            check = "search.php?f=a";
         }else{
-    
-            string check = (input.Length == 1 ) ? search = $"search.php?f={input}": search= $"search.php?s={input}" ;
-            //Console.WriteLine(check);
-            Stream stream = await Http.GetStreamAsync(UriCocktail.urlBase+check);
-            StreamReader reader = new StreamReader(stream);
-            string jsonString = reader.ReadToEnd();
-            var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(jsonString);
-            drinks = cocktailsValues.drinks;
-
-            return drinks;
+            check = (input.Length == 1 ) ? search = $"search.php?f={input}": search= $"search.php?s={input}" ;
         }
+        Stream stream = await Http.GetStreamAsync(UriCocktail.urlBase+check);
+        StreamReader reader = new StreamReader(stream);
+        string jsonString = reader.ReadToEnd();
+        var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(jsonString);
+        drinks = cocktailsValues.drinks;
 
         return drinks;
-
     }
 
 
