@@ -1,10 +1,10 @@
 ﻿@page "/cocktail/{Id}"
 @inject HttpClient Http
 
+<PageTitle>Cocktail Details</PageTitle>
 @{ 
     string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
 }
-<PageTitle>Cocktail Details</PageTitle>
 
 
 <div class="container">
