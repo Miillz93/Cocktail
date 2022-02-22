@@ -1,0 +1,60 @@
+@page "/Applications"
+@inject HttpClient Http
+
+<PageTitle>Applications</PageTitle>
+
+<div class="container">
+    <div class="row my-5">
+        <h3 class="font-weight-bold mt-5">Applications</h3>
+        <hr>
+        <p class="text-muted mt-2">Listes des projets en cours de développement.</p>
+        <div class="col-lg-12 mb-1">
+            <div class="py-1">
+        
+                <div class="row">
+                    
+                    @if (projects == null)
+                    {
+                        <p><em>Pas de projets disponibles...</em></p>
+                    }
+                    else
+                    {
+                         @foreach (var project in projects){
+                            <div class="col-lg-4 mb-3 mb-lg-0">
+                                <div class="hover hover-1 text-white rounded">
+                                    @* <img src="https://bootstrapious.com/i/snippets/sn-img-hover/hoverSet-3.jpg" alt=""> *@
+                                    @* <img src="images/cocktails.jpeg" alt=""> *@
+                                    <img src="@project.Image" alt="">
+                                    <div class="hover-overlay"></div>
+                                    <div class="hover-1-content px-5 py-4">
+                                        <h3 class="hover-1-title text-uppercase font-weight-bold mb-0"><a class="text-decoration-none text-white" href="/Cocktails">@project.Name</a></h3>
+                                        <p class="hover-1-description font-weight-light mb-0">@project.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                         }
+              
+                    }
+
+
+                    <!-- DEMO 1 Item-->
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+
+    private Project[]? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await Http.GetFromJsonAsync<Project[]>("data/project.json");
+    }
+
+
+
+}
