@@ -2,20 +2,18 @@
 @inject HttpClient Http
 
 <PageTitle>Cocktails</PageTitle>
-
-<div class="">
-    <div class="d-flex justify-content-center h-100">
-
-        
-        <div class="search mb-3"> 
-            <input type="text" class="search-input" placeholder="search..." name="" @bind="input">
-            <button class="btn btn-primary btn-large" @onclick="getCocktails">Search</button>
+<div class="jumbotron bg-cover bg-success text-white pt-2" style="height: 200px;">
+    <div class="row py-5 d-flex aligns-items-center justify-content-center">
+        <div class="col-9">
+            <input type="text" class="form-control form-control-lg" placeholder="search..." name="" @bind="input">
+        </div>
+        <div class="col-auto">
+            <button class="form-inline btn btn-primary btn-lg" @onclick="getCocktails">Search</button>
         </div>
     </div>
-
 </div>
 
-<section class="bg-light py-4 my-5">
+<section class="bg-light py-4">
     <div class="container">
         <div class="row">
   
@@ -31,7 +29,7 @@
                       string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
                     
                         
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-3">
                         <div class="card my-3">
                             <div class="card-thumbnail">
                                 <img src="@imagePath" class="img-fluid" alt="thumbnail">
