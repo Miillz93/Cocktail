@@ -1,9 +1,10 @@
 ﻿@inherits LayoutComponentBase
-
-<NavMenu />
-<main>
-    <article>
+<MudLayout>
+    <MudMainContent>
         @Body
-    </article>
-</main>
+    </MudMainContent>
+</MudLayout>
 
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>

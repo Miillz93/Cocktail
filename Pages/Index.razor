@@ -1,15 +1,9 @@
 ﻿@page "/"
+@using BlazorPlaygroundWasm.Pages.Cocktails
+@* @inject HttpClient Http *@
 
 <PageTitle>Index</PageTitle>
-
-<header class="header-img-full">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center">
-      <div class="col-12 text-center">
-        <h1 class="fw-light">Blazor Wasm Playground</h1>
-        <p class="lead">Ce site regroupe des mini-projets développés sous Blazor ou autres</p>
-        <a class="btn btn-primary btn-lg" href="/applications">Parcourir</a>
-      </div>
-    </div>
-  </div>
-</header>
+<MudGrid>
+  <NavMenu />
+  <CocktailsComponent />
+</MudGrid>

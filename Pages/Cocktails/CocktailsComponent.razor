@@ -1,70 +1,78 @@
-﻿@page "/cocktails"
-@inject HttpClient Http
+﻿@inject HttpClient Http
 
-<PageTitle>Cocktails</PageTitle>
-<div class="jumbotron bg-cover bg-success text-white pt-2" style="height: 200px;">
-    <div class="row py-5 d-flex aligns-items-center justify-content-center">
-        <div class="col-9">
-            <input type="text" class="form-control form-control-lg" placeholder="search..." name="" @bind="input">
-        </div>
-        <div class="col-auto">
-            <button class="form-inline btn btn-primary btn-lg" @onclick="getCocktails">Search</button>
-        </div>
-    </div>
-</div>
 
-<section class="bg-light py-4">
-    <div class="container">
-        <div class="row">
-  
-            @if(drinks == null){
-                <p><em>No data</em></p>
+<MudGrid Class="mx-3 mt-16">
+    @if(drinks == null){
+        <MudItem xs="12" sm="6" lg="3"
+            Typo="Typo.h3">
+            <MudText>
+                No Available Data
+            </MudText>
+        </MudItem>
+    }else{
+    
+        <MudItem xs="12" sm="12">
+            <MudText Typo="Typo.h4" Color="Color.Success">
+                Total des Cocktails: @drinks.Count
+            </MudText>
+        </MudItem>
+        @foreach (var drink in drinks)
+        {
+            string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
+            string currentDrink = "/cocktail/"+@drink.idDrink;
 
-            }else{
-                <div class="col-12">
-                    <h2 class="mb-3 text-danger">Total des Cocktails: @drinks.Count</h2>
+            <MudItem xs="12" sm="3">
+                <MudCard>
+                    <MudCardMedia Image="@imagePath" Height="250" />
+                    <MudCardContent>
+                        <MudText 
+                            Typo="Typo.h5" 
+                            Color="Color.Success">@drink.strDrink</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton
+                            Variant="Variant.Text"
+                            Color="Color.Success">
+                               <MudLink Href="@currentDrink"
+                               Underline="Underline.None">Learn More </MudLink>
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            @* <div class="col-md-6 col-lg-3">
+                <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="@imagePath" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="/cocktail/@drink.idDrink" class="text-secondary">@drink.strDrink</a></h3
+                    </div>
                 </div>
-                @foreach (var drink in drinks)
-                {
-                      string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
-                    
-                        
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card my-3">
-                            <div class="card-thumbnail">
-                                <img src="@imagePath" class="img-fluid" alt="thumbnail">
-                            </div>
-                            <div class="card-body">
-                                <h3 class="card-title"><a href="/cocktail/@drink.idDrink" class="text-secondary">@drink.strDrink</a></h3
-                            </div>
-                        </div>
-                    </div> 
-                    
-                }
+            </div>  *@
             
-            }
-        </div>
-    </div>
-</section>
+        }
+    
+    }
+</MudGrid>
 
 @code {
-   
     private List<Drink>? drinks {get;set;} 
 
-     string search=""; string input=""; string check = "";
+     string searchDrinkApi="", checkSearchApi = "";
+     string inputDrinkItem=""; 
        protected override async Task OnInitializedAsync()
     {
-        await getCocktails();
+        await getCocktails(inputDrinkItem);
     }
 
-    public async Task<List<Drink>> getCocktails(){
+    public async Task<List<Drink>> getCocktails(string inputDrinkItem){
         
-        if(String.IsNullOrWhiteSpace(input)){
-            check = "search.php?f=a";
+        if(String.IsNullOrWhiteSpace(inputDrinkItem)){
+            checkSearchApi = "search.php?f=a";
         }else{
-            check = (input.Length == 1 ) ? search = $"search.php?f={input}": search= $"search.php?s={input}" ;
+            checkSearchApi = (inputDrinkItem.Length == 1 ) ? searchDrinkApi = $"search.php?f={inputDrinkItem}": searchDrinkApi= $"search.php?s={inputDrinkItem}" ;
         }
-        Stream stream = await Http.GetStreamAsync(UriCocktail.urlBase+check);
+        Stream stream = await Http.GetStreamAsync(DrinkRoot._urlBase+checkSearchApi);
         StreamReader reader = new StreamReader(stream);
         string jsonString = reader.ReadToEnd();
         var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(jsonString);

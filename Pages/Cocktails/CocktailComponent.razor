@@ -3,28 +3,44 @@
 
 <PageTitle>Cocktail Details</PageTitle>
 @{ 
-    string imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
+    string? imagePath = drink.strDrinkThumb.Replace("\\","").Trim();
+    string? imgdetail = (string) drink.strDrinkAlternate;
 }
+ 
+<MudGrid Class="mt-6">
 
+    <MudItem xs="12" sm="12" Class="mx-4">
+        <MudText
+        Typo="Typo.h5" Color="Color.Success">
+        Cocktail Details
+        </MudText>
+    </MudItem>
+    <MudDivider />
+    <MudItem xs="12" sm="12">
+        <MudCard Class="d-flex">
+            <MudItem>
+                <MudImage Src="@imagePath"
+                Width="250" 
+                Height="250" 
+                Alt="@imgdetail" 
+                Elevation="1" 
+                Class="rounded-lg ma-4"/>
+            </MudItem>
+            <MudItem>
+                <MudText>How To ? @drink.strDrink</MudText>
+                <MudItem >
+                    <MudText>Ingredients: </MudText>
+                </MudItem>
+                <MudText Class="mb-4">Description: @drink.strInstructions</MudText>
+                <MudButton Variant="Variant.Filled"><MudLink Href="/" Underline="Underline.None">Retour</MudLink>
+                </MudButton>
+            </MudItem>
+        </MudCard>  
+            
+    </MudItem>
+    
 
-<div class="container">
-    <h2 class="pt-3">Cocktail Details</h2>
-    <hr />
-    <div class="card">
-        <div class="row no-gutters">
-            <div class="col-sm-3">
-                <img class="card-img" src="@imagePath" alt="@drink.strDrinkAlternate">
-            </div>
-            <div class="col-sm-9">
-                <div class="card-body">
-                    <h5 class="card-title">How To ? @drink.strDrink</h5>
-                    <p class="card-text">Description: @drink.strInstructions</p>
-                    <a href="/cocktails" class="btn btn-primary">Retour</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</MudGrid>
 
 @code {
 
@@ -36,7 +52,7 @@
     protected override async Task OnInitializedAsync()
     {
         
-        Stream stream = await Http.GetStreamAsync(UriCocktail.urlBase+$"lookup.php?i={Id}");
+        Stream stream = await Http.GetStreamAsync(DrinkRoot._urlBase+$"lookup.php?i={Id}");
         string reader = new StreamReader(stream).ReadToEnd();
         var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
         drink = cocktailsValues.drinks.First();
