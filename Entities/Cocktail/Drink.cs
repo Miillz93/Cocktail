@@ -32,14 +32,14 @@ public class Drink
         public string strIngredient5 { get; set; }
         public string strIngredient6 { get; set; }
         public string strIngredient7 { get; set; }
-        public object strIngredient8 { get; set; }
-        public object strIngredient9 { get; set; }
-        public object strIngredient10 { get; set; }
-        public object strIngredient11 { get; set; }
-        public object strIngredient12 { get; set; }
-        public object strIngredient13 { get; set; }
-        public object strIngredient14 { get; set; }
-        public object strIngredient15 { get; set; }
+        public string strIngredient8 { get; set; }
+        public string strIngredient9 { get; set; }
+        public string strIngredient10 { get; set; }
+        public string strIngredient11 { get; set; }
+        public string strIngredient12 { get; set; }
+        public string strIngredient13 { get; set; }
+        public string strIngredient14 { get; set; }
+        public string strIngredient15 { get; set; }
         public string strMeasure1 { get; set; }
         public string strMeasure2 { get; set; }
         public string strMeasure3 { get; set; }
@@ -59,5 +59,6 @@ public class Drink
         public string strImageAttribution { get; set; }
         public string strCreativeCommonsConfirmed { get; set; }
         public string dateModified { get; set; }
+        public string strDescription {get;set;}
     
 }
