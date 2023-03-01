@@ -1,21 +1,25 @@
 ﻿@using Pages.Cocktails;
 
 <MudAppBar Color="Color.Success" Elevation="1">
-        <MudText 
-            Typo="Typo.h5"
-            Class="ml-3"><MudLink Href="/" Underline="Underline.None" Color="Color.Inherit" Typo="Typo.h5">CocktailAPP</MudLink></MudText>
+        <MudText Typo="Typo.h5" Class="ml-3">
+            <MudLink Href="/" Underline="Underline.None" Color="Color.Inherit" Typo="Typo.h5">CocktailAPP</MudLink>            
+        </MudText>
         <MudSpacer />
-        <MudTextField 
-            @bind-Value="drinkItem"
+        @* <MudTextField 
             Placeholder="Search"
+            @bind-Value="InputDrinkItem"
+            @bind-Value:event="oninput"
+            OnInternalInputChanged="OnInputKeyUpChanged"
             DisableUnderLine
-            Variant="Variant.Filled" 
+            Variant="Variant.Filled"
             Margin="Margin.Dense"
-            OnKeyUp="getDrinkItems"
             Adornment ="Adornment.Start"
             AdornmentIcon="@Icons.Material.Filled.Search"
             AdornmentColor="Color.Inherit">
-        </MudTextField>
+        </MudTextField> *@
+       @* <input type="text" @bind-value="InputDrinkItem" @bind-value:event="oninput" @onchange="OnInputKeyUpChanged" placeholder="Search..."/> *@
+
+        @* @bind-Value:event="OnInputKeyUpChanged" *@
         <MudSpacer />
         <MudLink Href="https://github.com/miillz93"
             Underline="Underline.None">
@@ -26,16 +30,24 @@
         </MudLink>
         
 </MudAppBar>
-<br><br><br><br><br><br>
-<p>@drinkItem</p>
-
-
+<p class="pa-7">@InputDrinkItem</p>
 
 @code{
-    public static string drinkItem { get; set; } 
+
+    [Parameter]
+    public string? InputDrinkItem { get; set; } 
+    
+    [Parameter] 
+    public EventCallback<string> InputDrinkItemChanged { get; set; }
+
+    private Task OnInputKeyUpChanged(ChangeEventArgs e){
+        InputDrinkItem = e.Value?.ToString();
+        return InputDrinkItemChanged.InvokeAsync(InputDrinkItem);
+
+    }
 
     public void getDrinkItems(){
-        System.Console.WriteLine(drinkItem);
+        //System.Console.WriteLine(inputDrinkItem);
     }
     
     

@@ -29,7 +29,68 @@
             <MudItem>
                 <MudText>How To ? @drink.strDrink</MudText>
                 <MudItem >
-                    <MudText>Ingredients: </MudText>
+                    <MudText>
+                        Ingredients: @if (!string.IsNullOrEmpty(@drink.strIngredient1))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient1)">@drink.strIngredient1</MudButton>
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient2))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient2)">@drink.strIngredient2</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient3))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient3)">@drink.strIngredient3</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient4))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient4)">@drink.strIngredient4</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient5))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient5)">@drink.strIngredient5</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient6))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient6)">@drink.strIngredient6</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient7))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient7)">@drink.strIngredient7</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient8))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient8)">@drink.strIngredient8</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient9))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient9)">@drink.strIngredient9</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient10))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient10)">@drink.strIngredient10</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient11))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient11)">@drink.strIngredient11</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient12))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient12)">@drink.strIngredient12</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient13))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient13)">@drink.strIngredient13</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient14))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient14)">@drink.strIngredient14</MudButton>
+                            
+                        }@if (!string.IsNullOrEmpty(@drink.strIngredient15))
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ma-1" OnClick="()=>getIngredientInfos(drink.strIngredient15)">@drink.strIngredient15</MudButton>
+                            
+                        }  
+                    </MudText>
                 </MudItem>
                 <MudText Class="mb-4">Description: @drink.strInstructions</MudText>
                 <MudButton Variant="Variant.Filled"><MudLink Href="/" Underline="Underline.None">Retour</MudLink>
@@ -38,6 +99,12 @@
         </MudCard>  
             
     </MudItem>
+    <MudDivider />
+    <MudItem xs="12"  Class="mx-4">
+        <MudPaper Elevation="0" Class="ma-4">
+            @((!string.IsNullOrEmpty(@drinkIngredient.strDescription)) ? @drinkIngredient.strDescription : "Description Indisponible")
+        </MudPaper>
+    </MudItem>
     
 
 </MudGrid>
@@ -45,9 +112,13 @@
 @code {
 
     [Parameter]
-    public string Id{get;set;}
+    public string? Id{get;set;}
 
-    public Drink drink;
+    public string? Ingredient {get;set;}
+
+    private Ingredient drinkIngredient {get;set;} = new Ingredient();
+
+    private Drink? drink {get;set;} = new Drink();
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,6 +128,21 @@
         var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
         drink = cocktailsValues.drinks.First();
     
+    }
+
+
+    public async Task<Ingredient> getIngredientInfos(string _ingredients){   
+        if(!string.IsNullOrEmpty(_ingredients)){
+            Ingredient = $"search.php?i={_ingredients}";
+        }
+         System.Console.WriteLine(Ingredient);    
+
+        Stream stream = await Http.GetStreamAsync(DrinkRoot._urlBase+Ingredient);
+        string reader = new StreamReader(stream).ReadToEnd();
+        var ingredientValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
+        drinkIngredient = ingredientValues?.ingredients.First();
+        System.Console.WriteLine("zeeee"+drinkIngredient);
+        return drinkIngredient;
     }
     
 

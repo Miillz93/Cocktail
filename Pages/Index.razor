@@ -4,6 +4,16 @@
 
 <PageTitle>Index</PageTitle>
 <MudGrid>
-  <NavMenu />
-  <CocktailsComponent />
+  @* <NavMenu InputDrinkItem="@DrinkItemReference"  InputDrinkItemChanged="DrinkItemChanged"/> *@
+   @* <p class="mt-3">@DrinkItemReference with parent</p> *@
+    <CocktailsComponent />
+  @* <CocktailsComponent InputDrinkItemChanged="@DrinkItemReference" /> *@
 </MudGrid>
+
+@code{
+  private string ? DrinkItemReference { get; set; }
+
+  private void DrinkItemChanged(string drinkItem){
+    DrinkItemReference = drinkItem;
+  }
+}
