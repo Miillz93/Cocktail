@@ -3,9 +3,7 @@
 @inject ICocktailService CocktailService
 
 <PageTitle>Cocktail Details</PageTitle>
-@{ 
-    string imgdetail = (string) drink?.strDrinkAlternate;
-}
+
  
 <MudGrid Class="mt-6">
 
@@ -19,10 +17,10 @@
     <MudItem xs="12" sm="12">
         <MudCard Class="d-flex">
             <MudItem>
-                <MudImage Src="@imagePath"
+                <MudImage Src="@ImagePath"
                 Width="250" 
                 Height="250" 
-                Alt="@imgdetail" 
+                Alt="@ImgDetail" 
                 Elevation="1" 
                 Class="rounded-lg ma-4"/>
             </MudItem>
@@ -116,13 +114,15 @@
 
     private Drink? drink {get;set;} = new Drink();
 
-    public string? imagePath {get;set;}
-
+    private string? ImagePath {get;set;}
+    private string ImgDetail {get; set;}
 
     protected override async Task OnInitializedAsync()
     {
         drink = await CocktailService.GetCocktail(Id);
-        imagePath = drink?.strDrinkThumb.Replace("\\","").Trim();
+        ImagePath = drink?.strDrinkThumb.Replace("\\","").Trim();
+        ImgDetail = (string) drink?.strDrinkAlternate;
+
     }
 
     private async Task GetIngredientInfos(string ingredient){
