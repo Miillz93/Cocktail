@@ -21,7 +21,7 @@
 
         @* @bind-Value:event="OnInputKeyUpChanged" *@
         <MudSpacer />
-        <MudLink Href="https://github.com/miillz93"
+        <MudLink Href="https://github.com/miillz93/Cocktail"
             Underline="Underline.None">
             <MudIconButton
                 Icon="@Icons.Custom.Brands.GitHub"
@@ -30,11 +30,11 @@
         </MudLink>
         
 </MudAppBar>
-<p class="pa-7">@InputDrinkItem</p>
+@* <p class="pa-7">@InputDrinkItem</p> *@
 
 @code{
 
-    [Parameter]
+    @* [Parameter]
     public string? InputDrinkItem { get; set; } 
     
     [Parameter] 
@@ -44,12 +44,8 @@
         InputDrinkItem = e.Value?.ToString();
         return InputDrinkItemChanged.InvokeAsync(InputDrinkItem);
 
-    }
+    } *@
 
-    public void getDrinkItems(){
-        //System.Console.WriteLine(inputDrinkItem);
-    }
-    
     
 
 }
