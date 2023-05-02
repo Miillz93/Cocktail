@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 public class Drink
 {
-    public string? idDrink { get; set; }
+        public string? idDrink { get; set; }
         public string? strDrink { get; set; }
         public object? strDrinkAlternate { get; set; }
         public string? strTags { get; set; }
