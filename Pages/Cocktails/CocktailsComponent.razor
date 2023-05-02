@@ -1,10 +1,24 @@
 ﻿@inject ICocktailService CocktailService
 
+<MudGrid class="mb-16">
+    <MudPaper class="mud-theme-success py-10" Width="100%">
+        <MudContainer>
+            <MudPaper Elevation="0" Class="d-flex align-center flex-grow-1 gap-8 mud-theme-success">
+                <MudPaper Elevation="0" Class="py-10 flex-1 mx-xs-auto" style="background: none !important;">
+                    <MudText Class="text-white small-text mx-5" Typo="Typo.h1">Designed to make the best Cocktails</MudText>
+                </MudPaper>
+                <MudPaper Elevation="0" Class="py-16 flex-1 d-none d-sm-flex" style="background: none !important;">
+                    <MudImage Src="images/cocktail_removed.png" Width="400" Alt="cocktail home page"/>
+                </MudPaper>
+            </MudPaper>
+            
+        </MudContainer>
+    </MudPaper>
+</MudGrid>
 <MudGrid Class="mx-3 mt-16">
     <MudItem xs="12" sm="12" Class="d-flex justify-space-between flex-grow-1 gap-4">
             <MudPaper Elevation="0">
                 <MudText Typo="Typo.h5" Color="Color.Success">
-                @(drinks is null ? "Pas de données disponible": "Total des Cocktails: "+@drinks.Count) 
             </MudText>
             </MudPaper >
             <MudPaper Elevation="0" Height="64px">
