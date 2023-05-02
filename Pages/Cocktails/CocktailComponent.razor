@@ -97,7 +97,7 @@
     <MudDivider />
     <MudItem xs="12"  Class="mx-4">
         <MudPaper Elevation="0" Class="ma-4">
-            @((!string.IsNullOrEmpty(@DrinkIngredient.strDescription)) ? @DrinkIngredient.strDescription : "Description Indisponible")
+            @((string.IsNullOrEmpty(@drink?.Ingredient?.strDescription)) ? "Description Indisponible" : @drink.Ingredient.strDescription )
         </MudPaper>
     </MudItem>
     
@@ -109,13 +109,9 @@
 
     [Parameter]
     public string? Id{get;set;}
-
-    private Ingredient DrinkIngredient {get;set;} = new Ingredient();
-
     private Drink? drink {get;set;} = new Drink();
-
     private string? ImagePath {get;set;}
-    private string ImgDetail {get; set;}
+    private string? ImgDetail {get; set;}
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,7 +122,7 @@
     }
 
     private async Task GetIngredientInfos(string ingredient){
-        DrinkIngredient = await CocktailService.GetIngredientInfos(ingredient);
+        drink!.Ingredient = await CocktailService.GetIngredientInfos(ingredient);
     }
 
 
