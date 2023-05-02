@@ -1,3 +1,4 @@
+using System.Text.Json;
 using BlazorPlaygroundWasm.Entities.Cocktail;
 
 namespace BlazorPlaygroundWasm.Services;
@@ -14,26 +15,27 @@ public class CocktailService :  ICocktailService {
 
     public string ? InputDrinkItem {get; set;}
     private string ? Ingredient {get;set;}
-    private Ingredient DrinkIngredient {get;set;} = new Ingredient();
+    private Ingredient? DrinkIngredient {get;set;}
+    private List<Drink>? Drinks {get; set;}
+    private readonly HttpClient Http;
 
-    private List<Drink>? Drinks {get; set;} 
-    private readonly HttpClient Http = new HttpClient();
-     private string ? SearchDrinkApi= default; 
-     private string ? CheckSearchApi = default;
-
-
+    public CocktailService(){
+        Http ??= new HttpClient();
+    }
+    
     /*Fetch Cocktail List*/
      public async Task<List<Drink>> GetCocktails(string inputDrinkItem){
+        string CheckSearchApi = "", SearchDrinkApi;
         
         if(String.IsNullOrWhiteSpace(inputDrinkItem)){
-            CheckSearchApi = "search.php?f=a";
+            CheckSearchApi = "search.php?f=m";
         }else{
             CheckSearchApi = (inputDrinkItem.Length == 1 ) ? SearchDrinkApi = $"search.php?f={inputDrinkItem}": SearchDrinkApi= $"search.php?s={inputDrinkItem}" ;
         }
         Stream stream = await Http.GetStreamAsync(DrinkRoot._urlBase+CheckSearchApi);
         StreamReader reader = new StreamReader(stream);
         string jsonString = reader.ReadToEnd();
-        var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(jsonString);
+        var cocktailsValues = JsonSerializer.Deserialize<DrinkRoot>(jsonString);
         Drinks = cocktailsValues?.drinks;
 
         return Drinks;
@@ -45,10 +47,9 @@ public class CocktailService :  ICocktailService {
         if(String.IsNullOrEmpty(_id)) throw new ArgumentNullException("_id is null");
         Stream stream = await Http.GetStreamAsync(DrinkRoot._urlBase+$"lookup.php?i={_id}");
         string reader = new StreamReader(stream).ReadToEnd();
-        var cocktailsValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
-        drink = cocktailsValues.drinks.First(); 
+        var cocktails = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
+        drink = cocktails.drinks.First(); 
         return drink;
-
     }
     
     /*Get Cocktail Ingredients*/
@@ -58,7 +59,6 @@ public class CocktailService :  ICocktailService {
         Ingredient = $"search.php?i={_ingredients}";
 
         Stream stream = await Http.GetStreamAsync(DrinkRoot._urlBase+Ingredient);
-
         string reader = new StreamReader(stream).ReadToEnd();
         var _ingredientValues = System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(reader);
 
