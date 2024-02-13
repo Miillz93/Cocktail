@@ -1,4 +1,5 @@
 ﻿@inject ICocktailService CocktailService
+@inject HttpClient _http
 
 <MudGrid class="mb-16">
     <MudPaper class="mud-theme-success py-10" Width="100%">
@@ -112,16 +113,36 @@
 
        protected override async Task OnInitializedAsync()
     {
-          drinks = await CocktailService.GetCocktails("");
+         
+        //drinks = await CocktailService.GetCocktails("");
+        GetCocktails("");
     }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!firstRender){
-           drinks = await CocktailService.GetCocktails(InputDrinkItem);
-            await InvokeAsync(StateHasChanged);    
+           @* drinks = await CocktailService.GetCocktails(InputDrinkItem); *@
+            GetCocktails(InputDrinkItem);
+            StateHasChanged();
+
+            @* await InvokeAsync(StateHasChanged);     *@
         }
        
+    }
+
+    public async void GetCocktails(string input){
+        string CheckSearchApi="", SearchDrinkApi="";
+
+        //var http = _httpClientFactory.CreateClient("cocktail");
+
+        if(String.IsNullOrWhiteSpace(input)) CheckSearchApi = "search.php?f=m";
+
+        CheckSearchApi = (input.Length == 1 ) ? SearchDrinkApi = $"search.php?f={input}": SearchDrinkApi= $"search.php?s={input}";
+
+        @* _http.GetFromJsonAsync(CheckSearchApi) *@
+        var result = await _http.GetStringAsync(CheckSearchApi).ConfigureAwait(false);
+        var DrinkElements= System.Text.Json.JsonSerializer.Deserialize<DrinkRoot>(result);
+        drinks = DrinkElements?.drinks;
 
     }
 
